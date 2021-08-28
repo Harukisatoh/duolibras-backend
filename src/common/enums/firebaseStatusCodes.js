@@ -3,7 +3,7 @@ const httpStatusCodes = require("./httpStatusCodes");
 
 module.exports = {
   "auth/invalid-email": {
-    statusCode: httpStatusCodes.BAD_REQUEST,
+    statusCode: httpStatusCodes.UNPROCESSABLE_ENTITY,
   },
   "auth/user-not-found": {
     statusCode: httpStatusCodes.CONFLICT,
@@ -13,5 +13,14 @@ module.exports = {
   },
   "auth/user-disabled": {
     statusCode: httpStatusCodes.UNAUTHORIZED,
+  },
+  "auth/email-already-in-use": {
+    statusCode: httpStatusCodes.CONFLICT,
+  },
+  "auth/operation-not-allowed": {
+    statusCode: httpStatusCodes.NOT_FOUND,
+  },
+  "auth/weak-password": {
+    statusCode: httpStatusCodes.UNPROCESSABLE_ENTITY,
   },
 };

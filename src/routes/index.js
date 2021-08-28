@@ -6,7 +6,8 @@ const firebaseForwarder = new FirebaseForwarder();
 
 const routes = express.Router();
 
-routes.post("/login/email", firebaseForwarder.loginWithEmailAndPassword);
-routes.post("/reset-password", firebaseForwarder.resetPassword);
+routes.post("/auth/sign-up/email", firebaseForwarder.signUpWithEmail);
+routes.post("/auth/sign-in/email", firebaseForwarder.signInWithEmail);
+routes.post("/auth/reset-password", firebaseForwarder.resetEmailPassword);
 
 module.exports = routes;
