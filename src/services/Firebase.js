@@ -7,6 +7,21 @@ const firebaseAuthWrapper = require("../utils/firebaseAuthWrapper");
 class FirebaseService {
   static timestamp = Firebase.database.ServerValue.TIMESTAMP;
 
+  static async authWithFacebook(token) {
+    const credential = Firebase.auth.FacebookAuthProvider.credential(token);
+
+    const response = await Firebase.auth().signInWithCredential(credential);
+    const user = response.user.toJSON();
+
+    // Removes secrets from response
+    delete user["apiKey"];
+    delete user["appName"];
+    delete user["authDomain"];
+    delete user["stsTokenManager"]["apiKey"];
+
+    return user;
+  }
+
   static async signUpWithEmail(email, password) {
     const response = await firebaseAuthWrapper(
       Firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -41,6 +56,18 @@ class FirebaseService {
 
   static async resetEmailPassword(email) {
     await firebaseAuthWrapper(Firebase.auth().sendPasswordResetEmail(email));
+  }
+
+  static async checkIfUserDbIsAlreadyCreate(user) {
+    const response = await Firebase.database()
+      .ref(`userDetails/${user.uid}`)
+      .once("value", (snapshot) => snapshot);
+
+    if (response.exists()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   static async initializeUserDb(user) {
