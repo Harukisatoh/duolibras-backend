@@ -10,7 +10,7 @@ async function firebaseAuthWrapper(promise) {
     error: error,
   }));
 
-  if (promiseResult[rejected]) {
+  if (promiseResult && promiseResult[rejected]) {
     throw promiseResult.error;
   }
 
