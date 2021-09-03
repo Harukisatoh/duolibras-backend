@@ -5,7 +5,7 @@ const getFirebaseStatusCode = require("../utils/getFirebaseStatusCode");
 
 // Enums
 const httpStatusCodes = require("../common/enums/httpStatusCodes");
-class FirebaseForwarder {
+class AuthController {
   async authWithFacebook(request, response) {
     const { token } = request.body;
 
@@ -77,6 +77,22 @@ class FirebaseForwarder {
     }
   }
 
+  async signOut(request, response) {
+    const responsePayload = {
+      status: httpStatusCodes.SUCCESS,
+      data: {},
+    };
+
+    try {
+      await FirebaseService.signOut();
+    } catch (error) {
+      responsePayload.status = getFirebaseStatusCode(error.code);
+      responsePayload.data = { code: error.code, message: error.message };
+    } finally {
+      return response.status(responsePayload.status).json(responsePayload);
+    }
+  }
+
   async resetEmailPassword(request, response) {
     const { email } = request.body;
 
@@ -96,4 +112,4 @@ class FirebaseForwarder {
   }
 }
 
-module.exports = FirebaseForwarder;
+module.exports = AuthController;

@@ -54,6 +54,10 @@ class FirebaseService {
     return user;
   }
 
+  static async signOut() {
+    await firebaseAuthWrapper(Firebase.auth().signOut());
+  }
+
   static async resetEmailPassword(email) {
     await firebaseAuthWrapper(Firebase.auth().sendPasswordResetEmail(email));
   }
